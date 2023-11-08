@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_list/widgets/left_drawer.dart';
+import 'package:shopping_list/screens/shoplist_form.dart';
 
 class MyHomePage extends StatelessWidget {
     MyHomePage({Key? key}) : super(key: key);
-    final List<ShoppingItem> items = [
-      ShoppingItem("Lihat Produk", Icons.checklist, [Colors.blue, Colors.blueAccent]),
-      ShoppingItem("Tambah Produk", Icons.add_shopping_cart, [Colors.green, Colors.teal]),
-      ShoppingItem("Logout", Icons.logout, [Colors.redAccent, Colors.red]), 
+    final List<ShopItem> items = [
+      ShopItem("Lihat Produk", Icons.checklist, [Colors.blue, Colors.blueAccent]),
+      ShopItem("Tambah Produk", Icons.add_shopping_cart, [Colors.green, Colors.teal]),
+      ShopItem("Logout", Icons.logout, [Colors.redAccent, Colors.red]), 
     ];
     @override
     Widget build(BuildContext context) {
@@ -54,31 +56,33 @@ class MyHomePage extends StatelessWidget {
                 mainAxisSpacing: 10,
                 crossAxisCount: 3,
                 shrinkWrap: true,
-                children: items.map((ShoppingItem item) {
-                  return ShoppingCard(item);
+                children: items.map((ShopItem item) {
+                  return ShopCard(item);
                 }).toList(),
               ),
             ],
           ),
         ),
       ),
+      // Masukkan drawer sebagai parameter nilai drawer dari widget Scaffold
+      drawer: const LeftDrawer(),
     );
   }
 }
 
-class ShoppingItem {
+class ShopItem {
   final String name;
   final IconData icon;
   final List<Color> colors; // To hold gradient colors
 
-  ShoppingItem(this.name, this.icon, this.colors); // Constructor includes colors
+  ShopItem(this.name, this.icon, this.colors); // Constructor includes colors
 }
 
 
-class ShoppingCard extends StatelessWidget {
-  final ShoppingItem item;
+class ShopCard extends StatelessWidget {
+  final ShopItem item;
 
-  const ShoppingCard(this.item, {super.key}); // Constructor
+  const ShopCard(this.item, {super.key}); // Constructor
 
   @override
   Widget build(BuildContext context) {
@@ -93,6 +97,14 @@ class ShoppingCard extends StatelessWidget {
             ..hideCurrentSnackBar()
             ..showSnackBar(SnackBar(
                 content: Text("Kamu telah menekan tombol ${item.name}!")));
+                // Navigate ke route yang sesuai (tergantung jenis tombol)
+          if (item.name == "Tambah Produk") {
+            // TODO: Gunakan Navigator.push untuk melakukan navigasi ke MaterialPageRoute yang mencakup ShopFormPage.
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ShopFormPage()),
+            );
+          }
         },
         child: Container(
           decoration: BoxDecoration(
